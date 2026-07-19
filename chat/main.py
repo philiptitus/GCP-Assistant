@@ -154,6 +154,7 @@ async def get_chat(session_id: str):
     return {"session_id": session_id, "messages": session.get("messages", [])}
 
 
+
 @app.delete("/chat/{session_id}", status_code=204)
 async def delete_chat(session_id: str):
     doc_ref = firestore_client.collection(FIRESTORE_COLLECTION).document(session_id)
