@@ -66,8 +66,25 @@ def load_gemini_api_key() -> str:
     return response.payload.data.decode("utf-8")
 
 
-genai.configure(api_key=load_gemini_api_key())
-model = genai.GenerativeModel(MODEL_NAME)
+# Lazily initialized on first use, not at import time — Cloud Run's startup
+# health check just needs the HTTP server listening, and it shouldn't fail
+# to boot just because the Gemini secret doesn't have a version yet (e.g.
+# on the very first deploy, before the key has been added).
+_model = None
+
+
+def get_model():
+    global _model
+    if _model is None:
+        try:
+            genai.configure(api_key=load_gemini_api_key())
+        except Exception as exc:
+            raise HTTPException(
+                status_code=503,
+                detail="Gemini API key is not configured yet",
+            ) from exc
+        _model = genai.GenerativeModel(MODEL_NAME)
+    return _model
 
 
 class ChatRequest(BaseModel):
@@ -76,7 +93,7 @@ class ChatRequest(BaseModel):
 
 
 def generate_reply(prompt: str) -> str:
-    response = model.generate_content(prompt)
+    response = get_model().generate_content(prompt)
     return response.text
 
 
