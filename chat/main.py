@@ -21,7 +21,7 @@ GEMINI_SECRET_NAME = os.environ["GEMINI_SECRET_NAME"]
 MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
 HISTORY_LIMIT = int(os.environ.get("CHAT_HISTORY_LIMIT", "10"))
 MAX_MESSAGE_LENGTH = int(os.environ.get("CHAT_MAX_MESSAGE_LENGTH", "4000"))
-MAX_KNOWLEDGE_FILE_SIZE = int(os.environ.get("KNOWLEDGE_MAX_FILE_SIZE", "200000"))
+MAX_KNOWLEDGE_FILE_SIZE = int(os.environ.get("KNOWLEDGE_MAX_FILE_SIZE", "5242880"))
 KNOWLEDGE_OBJECT_NAME = "knowledge.txt"
 
 _RESERVED_LOG_ATTRS = set(vars(logging.LogRecord("", 0, "", 0, "", (), None)).keys())
