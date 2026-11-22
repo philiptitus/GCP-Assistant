@@ -176,7 +176,7 @@ resource "google_cloud_run_v2_service" "chat" {
       }
       env {
         name  = "KNOWLEDGE_MAX_FILE_SIZE"
-        value = "200000"
+        value = "5242880"
       }
     }
   }
