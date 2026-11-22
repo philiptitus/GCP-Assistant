@@ -133,11 +133,7 @@ curl -X POST "$CHAT_URL/chat" -H "Content-Type: application/json" \
   -d '{"session_id": "<session_id>", "message": "What did I just say?"}'
 ```
 
-Upload a knowledge base file:
 
-```bash
-curl -X POST "$CHAT_URL/knowledge" -F "file=@knowledge.txt"
-```
 
 View full history:
 
