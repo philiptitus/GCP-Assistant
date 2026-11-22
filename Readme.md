@@ -111,44 +111,4 @@ environment name again to confirm. This also destroys that environment's
 Secret Manager secret (and the key inside it) — re-adding the key is
 required after any environment is rebuilt from a destroy.
 
-## Testing it
 
-Get the chat service URL:
-
-```bash
-gcloud run services describe assistant-chat-dev --region=us-east1 --format='value(status.url)'
-```
-
-Start a conversation:
-
-```bash
-curl -X POST "$CHAT_URL/chat" -H "Content-Type: application/json" -d '{"message": "Hello!"}'
-# -> { "session_id": "...", "reply": "..." }
-```
-
-Continue it (reuse the session_id):
-
-```bash
-curl -X POST "$CHAT_URL/chat" -H "Content-Type: application/json" \
-  -d '{"session_id": "<session_id>", "message": "What did I just say?"}'
-```
-
-
-
-View full history:
-
-```bash
-curl "$CHAT_URL/chat/<session_id>"
-```
-
-Delete a session:
-
-```bash
-curl -X DELETE "$CHAT_URL/chat/<session_id>"
-```
-
-Manually trigger the cleanup job (rather than waiting for the schedule):
-
-```bash
-gcloud run jobs execute assistant-cleanup-dev --region=us-east1
-```
